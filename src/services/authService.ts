@@ -17,7 +17,7 @@ export async function signUp(userData: authRepository.userData){
 export async function signIn(userData: authRepository.userData){
 
   const verifyUser = await authRepository.searchUser(userData.email);
-
+  
   if(!verifyUser || !bcrypt.compareSync(userData.password, verifyUser.password))
     throw {status: 401, message: "invalid data"};      
     
@@ -27,9 +27,5 @@ export async function signIn(userData: authRepository.userData){
 
   await authRepository.insertToken(verifyUser.id, token);
 
-  return {
-    id: verifyUser.id,
-    email: verifyUser.email,
-    token: token
-  }
+  return token;
 }

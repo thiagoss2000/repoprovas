@@ -26,21 +26,21 @@ model sessions {
   users users @relation(fields: [userId], references: [id])
 }
 
-model terms {
+model term {
   id Int @id @default(autoincrement())
   number Int  @unique
-  disciplines disciplines[]
+  discipline discipline[]
 }
 
-model disciplines {
+model discipline {
   id Int @id @default(autoincrement())
   name String @unique
   termId Int 
-  terms terms @relation(fields: [termId], references: [id])
+  term term @relation(fields: [termId], references: [id])
   teachersDisciplines teachersDisciplines[]
 }
 
-model teachers {
+model teacher {
   id Int @id @default(autoincrement())
   name String @unique
   teachersDisciplines teachersDisciplines[]
@@ -50,8 +50,8 @@ model teachersDisciplines {
   id Int @id @default(autoincrement())
   teacherId Int
   disciplineId Int
-  teachers teachers @relation(fields: [teacherId], references: [id])
-  disciplines disciplines @relation(fields: [disciplineId], references: [id])
+  teacher teacher @relation(fields: [teacherId], references: [id])
+  discipline discipline @relation(fields: [disciplineId], references: [id])
   tests tests[]
 }
 
