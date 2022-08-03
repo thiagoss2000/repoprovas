@@ -23,8 +23,7 @@ const header = {
 
 describe("authentication test", () => {
     it("testing signup...", async () => {
-        await prisma.sessions.deleteMany({where: {users: {email: userData.email}}})
-        await prisma.users.deleteMany({where: {email: userData.email}})
+        clearTest();
         const response = await supertest(app).post("/sign-up").send(userData);
         expect(response.statusCode).toBe(201);
     });
@@ -43,8 +42,6 @@ describe("authentication test", () => {
 
 describe("crud test", () => {
     it("testing insert test...", async () => {
-        await prisma.tests.deleteMany({where: {name: testData.name}})
-        //await prisma.teachersDisciplines.deleteMany({where: {}});
         const response = await supertest(app).post("/tests").send(testData).set(header.auth, header.token);
         expect(response.statusCode).toBe(201);
     });
@@ -59,5 +56,12 @@ describe("crud test", () => {
         expect(responseT.statusCode).toBe(200);
         const responseD = await supertest(app).get("/tests").set(header.auth, header.token).query({groupBy: 'disciplines'});
         expect(responseD.statusCode).toBe(200);
+        clearTest();
     });
 });
+
+async function clearTest() {
+    await prisma.sessions.deleteMany({});
+    await prisma.users.deleteMany({});
+    await prisma.tests.deleteMany({});
+}

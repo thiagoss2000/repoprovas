@@ -6,9 +6,12 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest -i",
+    "test": "dotenv -e .env.test prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i",
     "start": "ts-node src/service.ts",
     "dev": "nodemon src/service.ts"
+  },
+  "prisma": {
+    "seed": "dotenv -e .env.test ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
